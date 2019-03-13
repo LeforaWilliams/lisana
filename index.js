@@ -38,11 +38,11 @@ app.get("/callback", (req, res) => {
         form: {
             code: code,
             redirect_uri,
-            grant_type_: "authorization_code"
+            grant_type: "authorization_code"
         },
         headers: {
-            Autorization:
-                "Basic" +
+            Authorization:
+                "Basic " +
                 new Buffer(`${clientID}:${clientSecret}`).toString("base64")
         },
         json: true
@@ -50,7 +50,6 @@ app.get("/callback", (req, res) => {
 
     request.post(authOptions, (error, response, body) => {
         let access_token = body.access_token;
-        console.log("Acess token>>>>", access_token);
         let uri = "http://localhost:8080";
         res.redirect(`${uri}?access_token=${access_token}`);
     });
