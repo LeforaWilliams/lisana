@@ -6,9 +6,10 @@ const querystring = require("querystring");
 const { clientID, clientSecret } = require("./secrets.json");
 
 //handlebars set up
+
 //register view handlebars view engine
 app.disable("x-powered-by");
-app.engine("handlebars", hb());
+app.engine("handlebars", hb({ defaultLayout: "main" }));
 //using handlebars view engine
 app.set("view engine", "handlebars");
 
@@ -16,9 +17,12 @@ app.set("view engine", "handlebars");
 app.use(express.static("public"));
 
 //user data authorisation
-//https://developer.spotify.com/documentation/general/guides/authorization-guide/#authorization-code-flow
 const redirect_uri = "http://localhost:8080/callback";
 let access_token = "";
+
+app.get("/home", (req, res) => {
+    res.render("home");
+});
 
 if (!access_token) {
     app.get("/login", (req, res) => {
