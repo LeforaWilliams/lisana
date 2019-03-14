@@ -18,18 +18,22 @@ app.use(express.static("public"));
 //user data authorisation
 //https://developer.spotify.com/documentation/general/guides/authorization-guide/#authorization-code-flow
 const redirect_uri = "http://localhost:8080/callback";
+let access_token = "";
 
-app.get("/login", (req, res) => {
-    res.redirect(
-        "https://accounts.spotify.com/authorize?" +
-            querystring.stringify({
-                response_type: "code",
-                client_id: clientID,
-                scope: "user-read-private user-read-email",
-                redirect_uri
-            })
-    );
-});
+if (!access_token) {
+    app.get("/login", (req, res) => {
+        res.redirect(
+            "https://accounts.spotify.com/authorize?" +
+                querystring.stringify({
+                    response_type: "code",
+                    client_id: clientID,
+                    scope:
+                        "user-read-private user-read-recently-played user-top-read",
+                    redirect_uri
+                })
+        );
+    });
+}
 
 app.get("/callback", (req, res) => {
     let code = req.query.code || null;
@@ -49,9 +53,9 @@ app.get("/callback", (req, res) => {
     };
 
     request.post(authOptions, (error, response, body) => {
-        let access_token = body.access_token;
-        let uri = "http://localhost:8080";
-        res.redirect(`${uri}?access_token=${access_token}`);
+        access_token = body.access_token;
+        let uri = "http://localhost:8080/home";
+        res.redirect(`${uri}`);
     });
 });
 
