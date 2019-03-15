@@ -4,6 +4,7 @@ const hb = require("express-handlebars");
 const request = require("request");
 const querystring = require("querystring");
 const { clientID, clientSecret } = require("./secrets.json");
+const {} = require("./api-calls.js");
 
 //handlebars set up
 
@@ -63,5 +64,5 @@ app.get("/callback", (req, res) => {
     });
 });
 
-let port = process.env.PORT || 8080;
+const port = process.env.PORT || 8080;
 app.listen(port, () => console.log(`listening to port ${port}`));

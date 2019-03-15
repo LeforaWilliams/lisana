@@ -19,6 +19,7 @@
     "mocha": "^6.0.2",
     "querystring": "^0.2.0",
     "request": "^2.88.0",
+    "requestify": "^0.2.5",
     "supertest": "^4.0.0"
   }
 }
