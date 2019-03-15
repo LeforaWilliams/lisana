@@ -2,9 +2,10 @@ const express = require("express");
 const app = express();
 const hb = require("express-handlebars");
 const request = require("request");
+const requestify = require("requestify");
 const querystring = require("querystring");
 const { clientID, clientSecret } = require("./secrets.json");
-const {} = require("./api-calls.js");
+const { getUserInfo } = require("./api-calls.js");
 
 //handlebars set up
 
@@ -19,10 +20,28 @@ app.use(express.static("public"));
 
 //user data authorisation
 const redirect_uri = "http://localhost:8080/callback";
+//save access token in res.session because next time will be undefined on the server or refresh token
+
 let access_token = "";
 
 app.get("/home", (req, res) => {
-    res.render("home");
+    let userInfoEndpoint = "https://api.spotify.com/v1/me";
+    requestify
+        .request(userInfoEndpoint, {
+            method: "GET",
+            headers: {
+                Authorization: "Bearer " + access_token
+            }
+        })
+        .then(userInfo => {
+            console.log("THIS IS THE USER INFO FROM SPOTIFY", userInfo);
+        })
+        .then(() => {
+            res.render("home");
+        })
+        .catch(err => {
+            console.log("ERROR WHEN GETTING DATA", err);
+        });
 });
 
 if (!access_token) {
@@ -59,6 +78,7 @@ app.get("/callback", (req, res) => {
 
     request.post(authOptions, (error, response, body) => {
         access_token = body.access_token;
+        console.log(access_token);
         let uri = "http://localhost:8080/home";
         res.redirect(`${uri}`);
     });
