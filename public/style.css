@@ -1,5 +1,38 @@
 body {
     background-color: #000c62;
+    font-family: sans-serif;
     color: white;
     text-align: center;
+}
+
+h1,
+h2 {
+    text-transform: uppercase;
+}
+
+.categories-container {
+    width: 100%;
+    margin: 50px auto;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.category {
+    height: 300px;
+    width: 300px;
+    margin-left: 30px;
+    margin-bottom: 50px;
+    background-color: white;
+    color: #000c62;
+    font-size: 1.4rem;
+    letter-spacing: 1.4px;
+    transition: all 0.6s ease-in;
+    cursor: pointer;
+}
+
+.category:hover {
+    background-color: #000c62;
+    color: white;
+    border: 1px solid white;
 }
